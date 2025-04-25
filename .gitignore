@@ -1,0 +1,5 @@
+capstone/.terraform.lock.hcl
+capstone/.terraform
+capstone/terraform.tfstate.backup
+capstone/terraform.tfstate
+
