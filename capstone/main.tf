@@ -30,5 +30,5 @@ module "rds" {
   source = "./modules/rds"
   subnet_ids = module.vpc.private_subnet_ids
   sg_id = module.security_groups.rds_sg_id
-  depends_on = [module.vpc]
+  depends_on = [module.vpc, module.security_groups]
  }
