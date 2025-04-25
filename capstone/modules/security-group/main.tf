@@ -16,10 +16,10 @@ resource "aws_security_group" "alb_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-   tags = {
-	Environment= "dev"
+  tags = {
+    Environment = "${var.environment}"
   }
-  
+
 }
 
 resource "aws_security_group" "ec2_sg" {
@@ -33,7 +33,7 @@ resource "aws_security_group" "ec2_sg" {
     security_groups = [aws_security_group.alb_sg.id]
   }
 
-     ingress {
+  ingress {
     from_port       = 80
     to_port         = 80
     protocol        = "tcp"
@@ -41,9 +41,9 @@ resource "aws_security_group" "ec2_sg" {
   }
 
   ingress {
-    from_port       = 80
-    to_port         = 80
-    protocol        = "tcp"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
@@ -53,8 +53,8 @@ resource "aws_security_group" "ec2_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-   tags = {
-	Environment= "dev"
+  tags = {
+    Environment = "${var.environment}"
   }
 }
 
@@ -75,7 +75,7 @@ resource "aws_security_group" "rds_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-   tags = {
-	Environment= "dev"
+  tags = {
+    Environment = "${var.environment}"
   }
 }

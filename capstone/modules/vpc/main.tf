@@ -1,32 +1,32 @@
 # modules/vpc/main.tf
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr_block
-  
+
   enable_dns_hostnames = true
   tags = {
-    Name = "Main_VPC"
-	Environment= "dev"
-	Project = "dev-${var.project_name}" 
+    Name        = "Main_VPC"
+    Environment = "${var.environment}"
+    Project     = "${var.environment}-${var.project_name}"
   }
 }
 
 resource "aws_internet_gateway" "igw" {
   vpc_id = aws_vpc.vpc.id
   tags = {
-    Name = "Main_IGW"
-	Environment = "dev"
+    Name        = "Main_IGW"
+    Environment = "${var.environment}"
   }
 }
 
 resource "aws_subnet" "public_subnet" {
-  count             = length(var.public_subnet_cidrs)
-  vpc_id            = aws_vpc.vpc.id
-  cidr_block        = var.public_subnet_cidrs[count.index]
-  availability_zone = element(var.availability_zones, count.index)
+  count                   = length(var.public_subnet_cidrs)
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = var.public_subnet_cidrs[count.index]
+  availability_zone       = element(var.availability_zones, count.index)
   map_public_ip_on_launch = true
   tags = {
-    Name = "public-subnet-${count.index}"
-	Environment = "dev"
+    Name        = "public-subnet-${count.index}"
+    Environment = "${var.environment}"
   }
 }
 
@@ -41,14 +41,14 @@ resource "aws_subnet" "private_subnet" {
 }
 
 resource "aws_subnet" "db_subnet" {
-  count             = length(var.db_subnet_cidrs)
-  vpc_id            = aws_vpc.vpc.id
-  cidr_block        = var.db_subnet_cidrs[count.index]
-  availability_zone = element(var.availability_zones, count.index)
+  count                   = length(var.db_subnet_cidrs)
+  vpc_id                  = aws_vpc.vpc.id
+  cidr_block              = var.db_subnet_cidrs[count.index]
+  availability_zone       = element(var.availability_zones, count.index)
   map_public_ip_on_launch = true
   tags = {
-    Name = "db-subnet-${count.index}"
-  Environment = "dev"
+    Name        = "db-subnet-${count.index}"
+    Environment = "${var.environment}"
   }
 }
 
@@ -72,17 +72,17 @@ resource "aws_eip" "nat_eip" {
   domain = "vpc"
 
   tags = {
-    Environment = "dev"
+    Environment = "${var.environment}"
   }
 }
 
 # NAT Gateway in first public subnet (you can choose index 0 or 1)
 resource "aws_nat_gateway" "nat" {
   allocation_id = aws_eip.nat_eip.id
-  subnet_id = aws_subnet.public_subnet[0].id
+  subnet_id     = aws_subnet.public_subnet[0].id
 
   tags = {
-    Environment = "dev"
+    Environment = "${var.environment}"
   }
 
   depends_on = [aws_internet_gateway.igw]
@@ -93,19 +93,19 @@ resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.vpc.id
 
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.nat.id
   }
 
   tags = {
-    Environment = "dev"
+    Environment = "${var.environment}"
   }
 }
 
 # Associate private route table with both private subnets
 resource "aws_route_table_association" "private_assoc" {
-  count = length(aws_subnet.private_subnet)
-  subnet_id = aws_subnet.private_subnet[count.index].id
+  count          = length(aws_subnet.private_subnet)
+  subnet_id      = aws_subnet.private_subnet[count.index].id
   route_table_id = aws_route_table.private_rt.id
 }
 
