@@ -17,7 +17,7 @@ module "alb" {
 module "asg" {
   source = "./modules/autoScaling"
   vpc_id = module.vpc.vpc_id
-  private_subnets = module.vpc.public_subnet_ids
+  private_subnets = module.vpc.private_subnet_ids
   alb_target_group_arn = module.alb.target_group_arn
   sg_id = module.security_groups.ec2_sg_id
   # userdata_git_repo = "var.ss"
