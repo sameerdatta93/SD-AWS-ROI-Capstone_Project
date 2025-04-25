@@ -69,7 +69,7 @@ resource "aws_route_table_association" "public_route_associate" {
 
 # Elastic IP for NAT Gateway 
 resource "aws_eip" "nat_eip" {
-  vpc = true
+  domain = "vpc"
 
   tags = {
     Environment = "dev"
