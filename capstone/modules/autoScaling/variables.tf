@@ -7,8 +7,8 @@ variable "ami_id" {}
 variable "instance_type" {}
 #variable "instance_profile_name" {}
 variable min_size { 
-  default = "1"
+  default = "2"
 }
 variable max_size {
-  default = "2"
+  default = "4"
   }
