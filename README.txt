@@ -28,7 +28,7 @@ chown -R ec2-user:ec2-user /home/ec2-user/SD-AWS-ROI-Capstone_Project
     Note: Wait for few minutes(1-2 mins) for the application to launch required services for the frontend to be loaded.
 10. Destroy towards the end if not required.
 
-Note: Application is just a basic feedback collection form with some basic validation and on submit entries should have been stored in RDS. Backend application is not setup entirely as was facing some issues, also IAM was supposed to be created for it to interact with DB. So only the frontend is visible for now and the backend connection is missing.
+Note: Application deployed on ec2, is just a basic feedback collection form with some basic validations and on submit, entries should have been stored in RDS. Backend application is not setup entirely as was facing some issues, also IAM was supposed to be created for it to interact with DB. So only the frontend is visible for now and the backend connection is missing.
 Infrastructure is completed from app functinality point of view, could include some good to have things like Route53, IAM, secret variables, CW metrics for scaling in actual scenario.  
 To run in diffent environments we can have different tfvars and can specify tfvar file name during apply if it is for dev, prod etc
 
