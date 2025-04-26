@@ -31,7 +31,7 @@ module "asg" {
 
 module "rds" {
   source      = "./modules/rds"
-  subnet_ids  = module.vpc.private_subnet_ids
+  subnet_ids  = module.vpc.db_subnet_ids
   sg_id       = module.security_groups.rds_sg_id
   environment = var.environment
   depends_on  = [module.vpc, module.security_groups]
